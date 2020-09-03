@@ -10,8 +10,11 @@ window.addEventListener("DOMContentLoaded", (event) => {
   ];
 
   let board = document.getElementById("tic-tac-toe-board");
+  let newGame = document.getElementById('new-game-button');
 
   board.addEventListener("click", (event) => {
+    if (gameStatus) {return}
+
     let targetelement = event.target;
     if (event.target.nodeName === "IMG") {
       targetelement = event.target.parentNode;
@@ -36,20 +39,30 @@ window.addEventListener("DOMContentLoaded", (event) => {
       currentPlayer = currentPlayer === "X" ? "O" : "X";
     }
 
-checkGameState();
+  checkGameState();
+
+
+
 
   });
 
   let checkGameState = function () {
-    // let boardState = getBoardState();
     checkRows();
     checkCols();
     checkDiag();
     checkFull();
-    if(!gameStatus) {
+    if(gameStatus) {
       declareWinner()
     }
   };
+
+  function declareWinner() {
+    let header = document.getElementById('game-status');
+
+    header.innerHTML = 'Winner: ' + gameStatus;
+
+    newGame.disabled = false;
+  }
 
   /*
   let squareVals = [
@@ -65,7 +78,6 @@ checkGameState();
       let row = squareVals[i];
       if (row[0] === row[1] && row[0] === row[2] && row[0] !== "") {
         gameStatus = row[0];
-        console.log(gameStatus);
         return;
       }
     }
@@ -79,7 +91,6 @@ checkGameState();
       }
       if (col[0] === col[1] && col[0] === col[2] && col[0] !== "") {
         gameStatus = col[0];
-        console.log(gameStatus);
         return;
       }
     }
@@ -94,12 +105,10 @@ checkGameState();
     }
     if (diag1[0] === diag1[1] && diag1[0] === diag1[2] && diag1[0] !== "") {
       gameStatus = diag1[0];
-      console.log(gameStatus);
       return;
     }
     if (diag2[0] === diag2[1] && diag2[0] === diag2[2] && diag2[0] !== "") {
       gameStatus = diag2[0];
-      console.log(gameStatus);
       return;
     }
   }
@@ -112,76 +121,8 @@ checkGameState();
         }
       }
     }
-    gameStatus = "none";
+    gameStatus = "Everyone's a winner!";
     return true;
   }
 
-  // function getBoardState() {
-  //   let boardVals = [];
-  //   let squares = document.querySelectorAll('.square');
-  //   for ( let i = 0; i < squares.length; i++) {
-
-  //   }
-  // }
-
-  // function checkRows() {
-  //   for (let i = 1; i <= 3; i++) {
-  //     let row = document.querySelectorAll(`.row-${i}`);
-  //     let firstVal = row[0].innerHTML;
-  //     let secondVal = row[1].innerHTML;
-  //     let thirdVal = row[2].innerHTML;
-
-  //     if (firstVal === secondVal && firstVal === thirdVal && firstVal !== "") {
-  //       let imageClass = row[0].lastElementChild.getAttribute("class");
-
-  //       if (imageClass === "O") {
-  //         console.log("O!!!!");
-  //         return "O won!";
-  //       }
-  //       if (imageClass === "X") {
-  //         console.log("X!!!!");
-  //         return "X won!";
-  //       }
-  //     }
-  //   }
-  // }
-
-  // function checkColls() {
-  //   for (let i = 1; i <= 3; i++) {
-  //     let col = document.querySelectorAll(`.col-${i}`);
-  //     let firstVal = col[0].innerHTML;
-  //     let secondVal = col[1].innerHTML;
-  //     let thirdVal = col[2].innerHTML;
-
-  //     if (firstVal === secondVal && firstVal === thirdVal && firstVal !== "") {
-  //       let imageClass = col[0].lastElementChild.getAttribute("class");
-
-  //       if (imageClass === "O") {
-  //         console.log("O!!!!");
-  //         return "O won!";
-  //       }
-  //       if (imageClass === "X") {
-  //         console.log("X!!!!");
-  //         return "X won!";
-  //       }
-  //     }
-  //   }
-  // }
-
-  // function checkDiag() {
-  //   let diagval1 = document
-  //     .querySelector(".row-1.col-1")
-  //     .lastElementChild.getAttribute("class");
-  //   console.log(diagval1);
-
-  //   let diagval2 = document
-  //     .querySelector(".row-2.col-2")
-  //     .lastElementChild.getAttribute("class");
-  //   console.log(diagval2);
-
-  //   let diagval3 = document
-  //     .querySelector(".row-3.col-3")
-  //     .lastElementChild.getAttribute("class");
-  //   console.log(diagval3);
-  // }
 });
