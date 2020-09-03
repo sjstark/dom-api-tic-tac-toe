@@ -10,10 +10,13 @@ window.addEventListener("DOMContentLoaded", (event) => {
   ];
 
   let board = document.getElementById("tic-tac-toe-board");
-  let newGame = document.getElementById('new-game-button');
+  let newGame = document.getElementById("new-game-button");
+  let header = document.getElementById("game-status");
 
   board.addEventListener("click", (event) => {
-    if (gameStatus) {return}
+    if (gameStatus) {
+      return;
+    }
 
     let targetelement = event.target;
     if (event.target.nodeName === "IMG") {
@@ -39,11 +42,29 @@ window.addEventListener("DOMContentLoaded", (event) => {
       currentPlayer = currentPlayer === "X" ? "O" : "X";
     }
 
-  checkGameState();
+    checkGameState();
 
+    newGame.addEventListener("click", (event) => {
+      gameStatus = undefined;
+      header.innerHTML = "";
+      squareVals = [
+        ["", "", ""],
+        ["", "", ""],
+        ["", "", ""],
+      ];
+      board.innerHTML = ` <div id="square-0" class="square row-1 col-1"></div>
+      <div id="square-1" class="square row-1 col-2"></div>
+      <div id="square-2" class="square row-1 col-3"></div>
+      <div id="square-3" class="square row-2 col-1"></div>
+      <div id="square-4" class="square row-2 col-2"></div>
+      <div id="square-5" class="square row-2 col-3"></div>
+      <div id="square-6" class="square row-3 col-1"></div>
+      <div id="square-7" class="square row-3 col-2"></div>
+      <div id="square-8" class="square row-3 col-3"></div>`;
 
-
-
+      currentPlayer = "X";
+      newGame.disabled = true;
+    });
   });
 
   let checkGameState = function () {
@@ -51,15 +72,13 @@ window.addEventListener("DOMContentLoaded", (event) => {
     checkCols();
     checkDiag();
     checkFull();
-    if(gameStatus) {
-      declareWinner()
+    if (gameStatus) {
+      declareWinner();
     }
   };
 
   function declareWinner() {
-    let header = document.getElementById('game-status');
-
-    header.innerHTML = 'Winner: ' + gameStatus;
+    header.innerHTML = "Winner: " + gameStatus;
 
     newGame.disabled = false;
   }
@@ -124,5 +143,4 @@ window.addEventListener("DOMContentLoaded", (event) => {
     gameStatus = "Everyone's a winner!";
     return true;
   }
-
 });
