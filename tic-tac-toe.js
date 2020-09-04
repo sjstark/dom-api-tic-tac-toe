@@ -1,7 +1,7 @@
 window.addEventListener("DOMContentLoaded", (event) => {
   let currentPlayer = "X";
 
-  let gameStatus;
+  let gameStatus = "";
 
   let squareVals = [
     ["", "", ""],
@@ -12,7 +12,7 @@ window.addEventListener("DOMContentLoaded", (event) => {
   let board = document.getElementById("tic-tac-toe-board");
   let newGame = document.getElementById("new-game-button");
   let header = document.getElementById("game-status");
-  let giveUpBtn = document.getElementById('give-up-button');
+  let giveUpBtn = document.getElementById("give-up-button");
 
   board.addEventListener("click", (event) => {
     if (gameStatus) {
@@ -47,15 +47,13 @@ window.addEventListener("DOMContentLoaded", (event) => {
 
     //Save variables to localStorage
     //localStorage.setItem('key', 'item')
-    localStorage.setItem('TTT-current-player', currentPlayer)
-    localStorage.setItem('TTT-game-status', gameStatus)
-    localStorage.setItem('TTT-square-vals', squareVals)
-
-
+    localStorage.setItem("TTT-current-player", currentPlayer);
+    localStorage.setItem("TTT-game-status", gameStatus);
+    localStorage.setItem("TTT-square-vals", JSON.stringify(squareVals));
   });
 
   newGame.addEventListener("click", (event) => {
-    gameStatus = undefined;
+    gameStatus = "";
     header.innerHTML = "";
     squareVals = [
       ["", "", ""],
@@ -77,22 +75,19 @@ window.addEventListener("DOMContentLoaded", (event) => {
     giveUpBtn.disabled = false;
   });
 
-  giveUpBtn.addEventListener('click', event => {
-    if (currentPlayer === 'X') {
-      gameStatus = 'O'
+  giveUpBtn.addEventListener("click", (event) => {
+    if (currentPlayer === "X") {
+      gameStatus = "O";
     } else {
-      gameStatus = 'X'
+      gameStatus = "X";
     }
 
     declareWinner();
 
     giveUpBtn.disabled = true;
+  });
 
-  })
-
-
-
-/*******************  HELPER FUNCTIONS BELOW ********************************/
+  /*******************  HELPER FUNCTIONS BELOW ********************************/
 
   let checkGameState = function () {
     checkRows();
@@ -171,9 +166,24 @@ window.addEventListener("DOMContentLoaded", (event) => {
     return true;
   }
 
-
   // Get from localStorage
 
-  // Update HTML to show board state
+  (function () {
+    currentPlayer = localStorage.getItem("TTT-curent-player");
+    gameStatus = localStorage.getItem("TTT-game-status");
+    squareVals = JSON.parse(localStorage.getItem("TTT-square-vals"));
 
+    let squares = board.children;
+    Array.from(squares).forEach(function(ele, i) {
+      let divClass = ele.getAttribute("class").split(" ");
+      let row = Number(divClass[1].slice(-1)) - 1;
+      let col = Number(divClass[2].slice(-1)) - 1;
+      let squareVal = squareVals[row][col]
+      
+      ele.innerHTML = 
+    })
+
+    console.log(squares);
+  })();
+  // Update HTML to show board state
 });
