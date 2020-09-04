@@ -12,6 +12,7 @@ window.addEventListener("DOMContentLoaded", (event) => {
   let board = document.getElementById("tic-tac-toe-board");
   let newGame = document.getElementById("new-game-button");
   let header = document.getElementById("game-status");
+  let giveUpBtn = document.getElementById('give-up-button');
 
   board.addEventListener("click", (event) => {
     if (gameStatus) {
@@ -44,28 +45,54 @@ window.addEventListener("DOMContentLoaded", (event) => {
 
     checkGameState();
 
-    newGame.addEventListener("click", (event) => {
-      gameStatus = undefined;
-      header.innerHTML = "";
-      squareVals = [
-        ["", "", ""],
-        ["", "", ""],
-        ["", "", ""],
-      ];
-      board.innerHTML = ` <div id="square-0" class="square row-1 col-1"></div>
-      <div id="square-1" class="square row-1 col-2"></div>
-      <div id="square-2" class="square row-1 col-3"></div>
-      <div id="square-3" class="square row-2 col-1"></div>
-      <div id="square-4" class="square row-2 col-2"></div>
-      <div id="square-5" class="square row-2 col-3"></div>
-      <div id="square-6" class="square row-3 col-1"></div>
-      <div id="square-7" class="square row-3 col-2"></div>
-      <div id="square-8" class="square row-3 col-3"></div>`;
+    //Save variables to localStorage
+    //localStorage.setItem('key', 'item')
+    localStorage.setItem('TTT-current-player', currentPlayer)
+    localStorage.setItem('TTT-game-status', gameStatus)
+    localStorage.setItem('TTT-square-vals', squareVals)
 
-      currentPlayer = "X";
-      newGame.disabled = true;
-    });
+
   });
+
+  newGame.addEventListener("click", (event) => {
+    gameStatus = undefined;
+    header.innerHTML = "";
+    squareVals = [
+      ["", "", ""],
+      ["", "", ""],
+      ["", "", ""],
+    ];
+    board.innerHTML = ` <div id="square-0" class="square row-1 col-1"></div>
+    <div id="square-1" class="square row-1 col-2"></div>
+    <div id="square-2" class="square row-1 col-3"></div>
+    <div id="square-3" class="square row-2 col-1"></div>
+    <div id="square-4" class="square row-2 col-2"></div>
+    <div id="square-5" class="square row-2 col-3"></div>
+    <div id="square-6" class="square row-3 col-1"></div>
+    <div id="square-7" class="square row-3 col-2"></div>
+    <div id="square-8" class="square row-3 col-3"></div>`;
+
+    currentPlayer = "X";
+    newGame.disabled = true;
+    giveUpBtn.disabled = false;
+  });
+
+  giveUpBtn.addEventListener('click', event => {
+    if (currentPlayer === 'X') {
+      gameStatus = 'O'
+    } else {
+      gameStatus = 'X'
+    }
+
+    declareWinner();
+
+    giveUpBtn.disabled = true;
+
+  })
+
+
+
+/*******************  HELPER FUNCTIONS BELOW ********************************/
 
   let checkGameState = function () {
     checkRows();
@@ -143,4 +170,10 @@ window.addEventListener("DOMContentLoaded", (event) => {
     gameStatus = "Everyone's a winner!";
     return true;
   }
+
+
+  // Get from localStorage
+
+  // Update HTML to show board state
+
 });
