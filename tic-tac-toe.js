@@ -15,6 +15,7 @@ window.addEventListener("DOMContentLoaded", (event) => {
   let giveUpBtn = document.getElementById("give-up-button");
 
   board.addEventListener("click", (event) => {
+    console.log('player prior to click:', currentPlayer)
     if (gameStatus) {
       return;
     }
@@ -50,6 +51,7 @@ window.addEventListener("DOMContentLoaded", (event) => {
     localStorage.setItem("TTT-current-player", currentPlayer);
     localStorage.setItem("TTT-game-status", gameStatus);
     localStorage.setItem("TTT-square-vals", JSON.stringify(squareVals));
+    console.log('player after click:', currentPlayer)
   });
 
   newGame.addEventListener("click", (event) => {
@@ -167,23 +169,61 @@ window.addEventListener("DOMContentLoaded", (event) => {
   }
 
   // Get from localStorage
+  try {
+    (function () {
+      currentPlayer = localStorage.getItem("TTT-curent-player");
+      gameStatus = localStorage.getItem("TTT-game-status");
+      squareVals = JSON.parse(localStorage.getItem("TTT-square-vals"));
 
-  (function () {
-    currentPlayer = localStorage.getItem("TTT-curent-player");
-    gameStatus = localStorage.getItem("TTT-game-status");
-    squareVals = JSON.parse(localStorage.getItem("TTT-square-vals"));
+      console.log(squareVals)
 
-    let squares = board.children;
-    Array.from(squares).forEach(function(ele, i) {
-      let divClass = ele.getAttribute("class").split(" ");
-      let row = Number(divClass[1].slice(-1)) - 1;
-      let col = Number(divClass[2].slice(-1)) - 1;
-      let squareVal = squareVals[row][col]
-      
-      ele.innerHTML = 
-    })
+      let squares = board.children;
+      Array.from(squares).forEach(function(ele, i) {
+        let divClass = ele.getAttribute("class").split(" ");
+        let row = Number(divClass[1].slice(-1)) - 1;
+        let col = Number(divClass[2].slice(-1)) - 1;
+        let squareVal = squareVals[row][col];
 
-    console.log(squares);
-  })();
-  // Update HTML to show board state
+        if (squareVal === '') {
+          ele.innerHTML = squareVal
+        } else if (squareVal === 'X') {
+          ele.innerHTML = '<img src="./images/player-x.svg" class="X"/>';
+        } else if (squareVal === 'O') {
+          ele.innerHTML = '<img src="./images/player-o.svg" class="O"/>';
+        }
+      })
+
+      if (gameStatus.length > 0) {
+        header.innerHTML = `Winner: ${gameStatus}`
+      }
+
+
+    })();
+    console.log('current player after try:', currentPlayer)
+  }
+  catch (error) {
+    console.log('No previous save game')
+    currentPlayer = "X";
+
+    gameStatus = "";
+
+    squareVals = [
+      ["", "", ""],
+      ["", "", ""],
+      ["", "", ""],
+    ];
+
+    console.log('current player after catch:', currentPlayer)
+  }
 });
+
+
+// if (currentPlayer === "O") {
+//   squareVals[row][col] = "O";
+//   targetelement.innerHTML =
+//     '<img src="./images/player-o.svg" class="O"/>';
+// } else {
+//   squareVals[row][col] = "X";
+//   targetelement.innerHTML =
+//     '<img src="./images/player-x.svg" class="X"/>';
+// }
