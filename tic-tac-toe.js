@@ -105,6 +105,7 @@ window.addEventListener("DOMContentLoaded", (event) => {
     header.innerHTML = "Winner: " + gameStatus;
 
     newGame.disabled = false;
+    giveUpBtn.disabled = true;
   }
 
   /*
@@ -171,7 +172,7 @@ window.addEventListener("DOMContentLoaded", (event) => {
   // Get from localStorage
   try {
     (function () {
-      currentPlayer = localStorage.getItem("TTT-curent-player");
+      currentPlayer = localStorage.getItem("TTT-current-player");
       gameStatus = localStorage.getItem("TTT-game-status");
       squareVals = JSON.parse(localStorage.getItem("TTT-square-vals"));
 
@@ -194,7 +195,10 @@ window.addEventListener("DOMContentLoaded", (event) => {
       })
 
       if (gameStatus.length > 0) {
-        header.innerHTML = `Winner: ${gameStatus}`
+        header.innerHTML = `Winner: ${gameStatus}`;
+        newGame.disabled = false;
+        giveUpBtn.disabled = true;
+
       }
 
 
